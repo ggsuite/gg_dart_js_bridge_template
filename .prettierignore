@@ -4,6 +4,7 @@ coverage
 node_modules
 dist
 typescript/generated
+.gg
 
 # JavaScript and TypeScript are formatted via ESLint / TS server.
 **/*.js
