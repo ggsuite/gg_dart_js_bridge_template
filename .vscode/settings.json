@@ -17,6 +17,26 @@
   },
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // ##############
+  // Prettier extension
+  // ##############
+  // Pin prettier-vscode to the workspace's prettier install and config so it
+  // does not silently fall back to the bundled prettier with default options
+  // (which would emit double quotes in YAML even though .prettierrc sets
+  // singleQuote: true).
+  "prettier.requireConfig": true,
+  "prettier.useEditorConfig": false,
+  "prettier.resolveGlobalModules": false,
+  "prettier.documentSelectors": [
+    "**/*.{yaml,yml}",
+    "**/*.{json,jsonc,json5}",
+    "**/*.md",
+    "**/*.{html,css,scss}"
+  ],
+
+  // Prevent the Red Hat YAML extension from claiming the YAML formatter.
+  "yaml.format.enable": false,
   "editor.rulers": [80],
   "editor.wordWrapColumn": 80,
   "editor.formatOnType": true,
@@ -121,6 +141,33 @@
   // #############
   "html.format.wrapLineLength": 80,
   "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[scss]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   // #############
@@ -340,7 +387,9 @@
   // Markdown
   // ###########
 
-  "[markdown]": {},
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 
   // ###########
   // DeepL
