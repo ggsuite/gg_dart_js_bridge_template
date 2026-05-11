@@ -6,6 +6,12 @@
 
 import { loadBridge, type RuntimeOptions } from './runtime.js';
 
+export {
+  assertWasmGcSupported,
+  checkWasmGcSupport,
+  type WasmGcSupport,
+} from './compat.js';
+
 // -----------------------------------------------------------------------------
 // Public TypeScript types — hand-written. These declare the JS-facing API
 // that the Dart side promises to deliver. `tsc --emitDeclarationOnly` turns

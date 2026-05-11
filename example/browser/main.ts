@@ -9,10 +9,17 @@ import { runClassExample } from '../../typescript/examples/class.js';
 import { runFunctionExample } from '../../typescript/examples/function.js';
 import { runJsonExample } from '../../typescript/examples/json.js';
 import wasmUrl from '../../typescript/generated/bridge-wasm.wasm?url';
-import { init } from '../../typescript/index.js';
-
+import { checkWasmGcSupport, init } from '../../typescript/index.js';
 
 async function main(): Promise<void> {
+  // Surface a clear message when the browser is missing Wasm-GC support
+  // before we even try to load the bundle.
+  const support = checkWasmGcSupport();
+  if (!support.supported) {
+    showUnsupported(support.reasons);
+    return;
+  }
+
   // Pre-warm the bridge with the bundler-resolved wasm URL.
   await init({ wasmUrl });
 
@@ -30,7 +37,31 @@ function setText(id: string, text: string): void {
   if (el) el.textContent = text;
 }
 
-main().catch((e) => {
+function showUnsupported(reasons: readonly string[]): void {
+  const banner = document.createElement('section');
+  banner.style.cssText =
+    'border: 1px solid #d33; background: #fdd; padding: 1rem; ' +
+    'border-radius: 4px; margin-bottom: 1.5rem;';
+  banner.innerHTML =
+    '<h2 style="margin-top:0;color:#900">Browser not supported</h2>' +
+    '<p>This demo requires a WebAssembly runtime with the GC proposal and ' +
+    'JS-string builtins. Please use a recent build of Chrome / Edge (≥ 119), ' +
+    'Firefox (≥ 120), or Safari (≥ 18.4).</p>';
+  const list = document.createElement('ul');
+  for (const r of reasons) {
+    const li = document.createElement('li');
+    li.textContent = r;
+    list.append(li);
+  }
+  banner.append(list);
+  document.body.prepend(banner);
+}
+
+main().catch((e: unknown) => {
   console.error(e);
-  document.body.append(`Error: ${String(e)}`);
+  const msg = e instanceof Error ? e.message : String(e);
+  const pre = document.createElement('pre');
+  pre.style.cssText = 'color: #900; white-space: pre-wrap;';
+  pre.textContent = msg;
+  document.body.append(pre);
 });

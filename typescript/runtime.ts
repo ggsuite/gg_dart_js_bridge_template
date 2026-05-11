@@ -4,6 +4,9 @@
 // Use of this source code is governed by terms that can be
 // found in the LICENSE file in the root of this package.
 
+import { assertWasmGcSupported } from './compat.js';
+
+
 import type { DartBridge } from "./index.js";
 
 /** Which compiled Dart target to load. */
@@ -85,6 +88,11 @@ interface WasmLoader {
 }
 
 async function loadWasm(wasmUrl?: string | URL): Promise<DartBridge> {
+  // Fail fast with a clear, actionable message if the runtime is missing
+  // Wasm-GC or JS-string builtins, rather than letting WebAssembly.compile
+  // throw something opaque from inside the loader.
+  assertWasmGcSupported();
+
   const loader = (await import(
     "./generated/bridge-wasm.js"
   )) as unknown as WasmLoader;
