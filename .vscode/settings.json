@@ -1,0 +1,34 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
+  "editor.rulers": [80],
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+
+  "files.readonlyInclude": {
+    "typescript/generated/**": true,
+    "dist/**": true
+  },
+
+  "search.exclude": {
+    "**/.dart_tool": true,
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/typescript/generated": true,
+    "**/coverage": true
+  },
+
+  "[dart]": {
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.rulers": [80]
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}

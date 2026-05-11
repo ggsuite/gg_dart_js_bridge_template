@@ -1,0 +1,17 @@
+# Dart
+.dart_tool/
+build/
+*.dart_tool
+
+# Node
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+typescript/generated/
+coverage/
+
+# OS / IDE
+.DS_Store
+*.log

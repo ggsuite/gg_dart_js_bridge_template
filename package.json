@@ -1,0 +1,66 @@
+{
+  "name": "gg-dart-js-bridge-template",
+  "version": "0.1.0",
+  "description": "Template showing how to expose a Dart package as a JavaScript and WebAssembly module with hand-typed TypeScript declarations.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "browser": "./dist/index.browser.js",
+      "node": "./dist/index.node.js",
+      "default": "./dist/index.js"
+    },
+    "./wasm": "./dist/bridge-wasm.wasm"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "sync-version": "dart run scripts/sync_version.dart",
+    "build:dart": "dart run build.dart",
+    "build:dart:debug": "dart run build.dart --debug",
+    "build:ts": "tsc -p tsconfig.json && vite build",
+    "build": "pnpm run sync-version && pnpm run build:dart && pnpm run build:ts",
+    "clean": "rm -rf dist typescript/generated && mkdir -p typescript/generated",
+    "test:dart": "dart test",
+    "test:vitest": "vitest run",
+    "test:node": "vitest run --project=node",
+    "test:browser": "vitest run --project=browser",
+    "test": "pnpm run test:dart && pnpm run test:vitest",
+    "lint": "eslint typescript",
+    "example:browser": "vite --config example/browser/vite.config.mts",
+    "example:node": "node example/node-cli/index.mjs",
+    "prepublishOnly": "pnpm run build && pnpm run test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.10.0",
+    "@vitest/browser": "^2.1.8",
+    "eslint": "^9.17.0",
+    "playwright": "^1.49.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.3",
+    "vitest": "^2.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ggsuite/gg_dart_js_bridge_template.git"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "author": "Dr. Gabriel Gatzsche",
+  "packageManager": "pnpm@11.0.9+sha512.34ce82e6780233cf9cad8685029a8f81d2e06196c5a9bad98879f7424940c6817c4e4524fb7d38b8553ceed48b9758b8ebaf1abd3600c232c4c8cf7366086f38",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "msw"
+    ]
+  }
+}
