@@ -20,6 +20,28 @@ import 'example_function.dart' as ex_fn;
 import 'example_json.dart' as ex_json;
 
 // .............................................................................
+// Extension types describing the JS-side object shapes used by example 3.
+//
+// They are zero-cost wrappers around `JSObject` — no runtime conversion,
+// just typed access from Dart to fields of a plain JS object.
+
+/// JS view of a `Person` object: `{ name: string, age: number }`.
+extension type _PersonJs._(JSObject _) implements JSObject {
+  external _PersonJs({required String name, required int age});
+  external String get name;
+  external int get age;
+}
+
+/// JS view of the enriched result: `{ name, age, isAdult }`.
+extension type _EnrichedPersonJs._(JSObject _) implements JSObject {
+  external _EnrichedPersonJs({
+    required String name,
+    required int age,
+    required bool isAdult,
+  });
+}
+
+// .............................................................................
 // Public API exposed to JS
 
 /// JS-facing wrapper around the Dart API. Marked with [JSExport] so
@@ -47,11 +69,25 @@ class DartBridge {
     );
   }
 
-  // ----- example 3: JSON exchange -----
+  // ----- example 3: typed object exchange -----
 
-  /// Take a JSON string, enrich it, return a JSON string.
-  String enrichPersonJson(String input) =>
-      _guard(() => ex_json.enrichPersonJson(input));
+  /// Accept a JS `{ name, age }` object, return `{ name, age, isAdult }`.
+  ///
+  /// No JSON serialization happens at the boundary — `JSObject` extension
+  /// types give us typed access to the JS object's fields directly.
+  JSObject enrichPerson(JSObject input) {
+    return _guard(() {
+      final p = input as _PersonJs;
+      final out = ex_json.enrichPerson(
+        ex_json.Person(name: p.name, age: p.age),
+      );
+      return _EnrichedPersonJs(
+        name: out.name,
+        age: out.age,
+        isAdult: out.isAdult,
+      );
+    });
+  }
 
   // ----- example 4: JS callback passed into Dart -----
 
@@ -66,13 +102,12 @@ class DartBridge {
   ) {
     return _guard(() {
       final dartItems = items.toDart.map<String>((j) => j.toDart).toList();
-      final result = ex_cb.mapWithCallback<String, String>(
-        dartItems,
-        (String s) {
-          final ret = callback.callAsFunction(null, s.toJS);
-          return (ret as JSString?)?.toDart ?? '';
-        },
-      );
+      final result = ex_cb.mapWithCallback<String, String>(dartItems, (
+        String s,
+      ) {
+        final ret = callback.callAsFunction(null, s.toJS);
+        return (ret as JSString?)?.toDart ?? '';
+      });
       return result.map<JSString>((s) => s.toJS).toList().toJS;
     });
   }

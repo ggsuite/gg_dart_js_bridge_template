@@ -4,43 +4,35 @@
 // Use of this source code is governed by terms that can be
 // found in the LICENSE file in the root of this package.
 
-import 'dart:convert';
-
-/// Input model parsed from JSON.
+/// A plain Dart model for a person. Used both inside Dart code and as
+/// the conceptual shape exchanged with JS via the bridge.
 class Person {
   /// Create a [Person].
   const Person({required this.name, required this.age});
-
-  /// Parse from a JSON map.
-  factory Person.fromJson(Map<String, dynamic> json) => Person(
-    name: json['name'] as String,
-    age: json['age'] as int,
-  );
 
   /// Name of the person.
   final String name;
 
   /// Age in years.
   final int age;
-
-  /// Convert to a JSON map.
-  Map<String, dynamic> toJson() => <String, dynamic>{
-    'name': name,
-    'age': age,
-  };
 }
 
-/// Takes a JSON string describing a [Person] and returns an enriched JSON
-/// string describing the same person plus a derived `isAdult` flag.
-///
-/// String-based JSON exchange is the simplest, bundler-agnostic way to pass
-/// structured data across the Dart/JS boundary.
-String enrichPersonJson(String input) {
-  final decoded = jsonDecode(input) as Map<String, dynamic>;
-  final person = Person.fromJson(decoded);
-  final result = <String, dynamic>{
-    ...person.toJson(),
-    'isAdult': person.age >= 18,
-  };
-  return jsonEncode(result);
+/// A [Person] enriched with a derived `isAdult` flag.
+class EnrichedPerson extends Person {
+  /// Create an [EnrichedPerson].
+  const EnrichedPerson({
+    required super.name,
+    required super.age,
+    required this.isAdult,
+  });
+
+  /// True if [Person.age] is at least 18.
+  final bool isAdult;
 }
+
+/// Adds the derived `isAdult` flag to [p].
+EnrichedPerson enrichPerson(Person p) => EnrichedPerson(
+  name: p.name,
+  age: p.age,
+  isAdult: p.age >= 18,
+);

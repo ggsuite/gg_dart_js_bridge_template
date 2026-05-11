@@ -199,7 +199,7 @@ the right variant when we eventually need environment-specific tweaks.
 |---|---|---|---|---|
 | 1 | Function call | `add`, `greet` in `example_function.dart` | `dart.add(2, 3)` | Primitive-in, primitive-out: the simplest possible crossing |
 | 2 | Class + async method | `Counter` in `example_class.dart` | `dart.createCounter(10)` returns a JS object whose `incrementAsync(...)` returns a `Promise<number>` | `createJSInteropWrapper` on instances; `Future → JSPromise` |
-| 3 | JSON exchange | `enrichPersonJson(String)` in `example_json.dart` | `JSON.parse(dart.enrichPersonJson(JSON.stringify(person)))` | String-based JSON crossing the boundary — the simplest way to pass structured data |
+| 3 | Typed object exchange | `enrichPerson(Person)` in `example_json.dart`; `JSObject` extension types `_PersonJs` / `_EnrichedPersonJs` in `main.dart` | `dart.enrichPerson({ name, age })` → `{ name, age, isAdult }` | Zero-cost typed access to JS object fields via `dart:js_interop` extension types — no `JSON.stringify`/`parse` |
 | 4 | JS callback into Dart | `mapWithCallback<T,R>` in `example_callback.dart` | `dart.mapWithCallback(items, fn)` — Dart invokes `fn` per element | `JSFunction.callAsFunction(...)` and per-element `JSString ↔ String` |
 
 Each pattern is exercised in three places: a Dart unit test (against the

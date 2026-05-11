@@ -22,6 +22,17 @@ export interface Counter {
   incrementAsync(delayMs: number, by?: number): Promise<number>;
 }
 
+/** Input shape for `enrichPerson`. */
+export interface Person {
+  name: string;
+  age: number;
+}
+
+/** Output shape returned by `enrichPerson`. */
+export interface EnrichedPerson extends Person {
+  isAdult: boolean;
+}
+
 /** The bridge surface exposed to JS/TS callers. */
 export interface DartBridge {
   /** Add two integers. */
@@ -30,8 +41,8 @@ export interface DartBridge {
   greet(name: string): string;
   /** Create a new counter starting at `initial` (default 0). */
   createCounter(initial?: number): Counter;
-  /** Enrich a JSON-encoded person string. */
-  enrichPersonJson(input: string): string;
+  /** Enrich a person object with a derived `isAdult` flag. */
+  enrichPerson(input: Person): EnrichedPerson;
   /** Apply a JS callback to every entry of `items`. */
   mapWithCallback(items: string[], callback: (item: string) => string): string[];
 }

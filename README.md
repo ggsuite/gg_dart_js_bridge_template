@@ -78,7 +78,7 @@ See [`example/`](example/) for the bundler integration details.
 |---|---|---|---|
 | 1 | Function call | `add(int, int)` in `example_function.dart` | `dart.add(a, b)` |
 | 2 | Class + async method | `Counter` in `example_class.dart` | `dart.createCounter()` → handle with `incrementAsync` returning `Promise<number>` |
-| 3 | JSON exchange | `enrichPersonJson` in `example_json.dart` | `dart.enrichPersonJson(JSON.stringify(...))` |
+| 3 | Typed object exchange | `enrichPerson` in `example_json.dart` (+ `JSObject` extension types in `main.dart`) | `dart.enrichPerson({ name, age })` — returns `{ name, age, isAdult }` |
 | 4 | JS callback into Dart | `mapWithCallback` in `example_callback.dart` | `dart.mapWithCallback(items, fn)` — Dart invokes `fn` per element |
 
 Each pattern has a Dart unit test, a TypeScript example file, and a Vitest
