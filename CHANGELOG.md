@@ -2,6 +2,8 @@
 
 ## \[Unreleased\]
 
+### Changed
+
 - Initial template scaffold.
 - Dart→JS+Wasm bridge with four illustrative patterns:
 function call, class with async methods, JSON exchange, JS callback into Dart.
