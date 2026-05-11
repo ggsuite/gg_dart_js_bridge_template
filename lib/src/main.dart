@@ -9,6 +9,9 @@
 /// `dart compile js` and `dart compile wasm` both run `main()` once when the
 /// module is loaded. We attach a single object — `dartBridge` — to the
 /// globalThis scope. The TypeScript wrapper picks it up from there.
+
+// coverage:ignore-file
+
 library;
 
 import 'dart:js_interop';

@@ -31,8 +31,5 @@ class EnrichedPerson extends Person {
 }
 
 /// Adds the derived `isAdult` flag to [p].
-EnrichedPerson enrichPerson(Person p) => EnrichedPerson(
-  name: p.name,
-  age: p.age,
-  isAdult: p.age >= 18,
-);
+EnrichedPerson enrichPerson(Person p) =>
+    EnrichedPerson(name: p.name, age: p.age, isAdult: p.age >= 18);

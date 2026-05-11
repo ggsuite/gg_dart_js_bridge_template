@@ -56,6 +56,7 @@ let cached: DartBridge | undefined;
  * Load and initialize the Dart bridge.
  *
  * Idempotent: repeated calls return the same instance.
+ * @param options - Runtime options (target selection, wasm URL, …).
  */
 export async function init(options: InitOptions = {}): Promise<DartBridge> {
   if (cached) return cached;

@@ -16,9 +16,10 @@ import 'dart:io';
 
 Future<void> main() async {
   final pubspec = await File('pubspec.yaml').readAsString();
-  final match = RegExp(r'^version:\s*(\S+)', multiLine: true).firstMatch(
-    pubspec,
-  );
+  final match = RegExp(
+    r'^version:\s*(\S+)',
+    multiLine: true,
+  ).firstMatch(pubspec);
   if (match == null) {
     stderr.writeln('Could not find version: line in pubspec.yaml');
     exit(2);

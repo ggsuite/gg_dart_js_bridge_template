@@ -1,0 +1,21 @@
+# Ignore artifacts
+build
+coverage
+node_modules
+dist
+typescript/generated
+
+# JavaScript and TypeScript are formatted via ESLint / TS server.
+**/*.js
+**/*.ts
+**/*.mjs
+**/*.mts
+
+# Dart files
+**/*.dart
+
+# Lockfiles
+pnpm-lock.yaml
+pubspec.lock
+
+tsconfig.json

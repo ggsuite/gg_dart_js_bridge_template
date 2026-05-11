@@ -10,7 +10,7 @@ Provide a working, minimal example of how to take a Dart package and ship
 it on **npm** as a JavaScript module that
 
 - runs in both **Node.js** and the **browser**,
-- is available as **JavaScript** *and* **WebAssembly**,
+- is available as **JavaScript** _and_ **WebAssembly**,
 - has **hand-typed TypeScript declarations**, and
 - demonstrates the four most common interop patterns: a function call, a
   class with sync + async methods, JSON exchange, and a JS callback invoked
@@ -143,7 +143,7 @@ shape of the bridge (`interface DartBridge`, `interface Counter`, …) and
 exposes a single async entry point:
 
 ```ts
-export async function init(options?: InitOptions): Promise<DartBridge>
+export async function init(options?: InitOptions): Promise<DartBridge>;
 ```
 
 `init()` is **idempotent** — repeated calls return the same instance. This
@@ -195,12 +195,12 @@ the right variant when we eventually need environment-specific tweaks.
 
 ## 7. The four illustrated patterns
 
-| # | Pattern | Dart side | JS side | Demonstrates |
-|---|---|---|---|---|
-| 1 | Function call | `add`, `greet` in `example_function.dart` | `dart.add(2, 3)` | Primitive-in, primitive-out: the simplest possible crossing |
-| 2 | Class + async method | `Counter` in `example_class.dart` | `dart.createCounter(10)` returns a JS object whose `incrementAsync(...)` returns a `Promise<number>` | `createJSInteropWrapper` on instances; `Future → JSPromise` |
-| 3 | Typed object exchange | `enrichPerson(Person)` in `example_json.dart`; `JSObject` extension types `_PersonJs` / `_EnrichedPersonJs` in `main.dart` | `dart.enrichPerson({ name, age })` → `{ name, age, isAdult }` | Zero-cost typed access to JS object fields via `dart:js_interop` extension types — no `JSON.stringify`/`parse` |
-| 4 | JS callback into Dart | `mapWithCallback<T,R>` in `example_callback.dart` | `dart.mapWithCallback(items, fn)` — Dart invokes `fn` per element | `JSFunction.callAsFunction(...)` and per-element `JSString ↔ String` |
+| #   | Pattern               | Dart side                                                                                                                  | JS side                                                                                              | Demonstrates                                                                                                   |
+| --- | --------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| 1   | Function call         | `add`, `greet` in `example_function.dart`                                                                                  | `dart.add(2, 3)`                                                                                     | Primitive-in, primitive-out: the simplest possible crossing                                                    |
+| 2   | Class + async method  | `Counter` in `example_class.dart`                                                                                          | `dart.createCounter(10)` returns a JS object whose `incrementAsync(...)` returns a `Promise<number>` | `createJSInteropWrapper` on instances; `Future → JSPromise`                                                    |
+| 3   | Typed object exchange | `enrichPerson(Person)` in `example_json.dart`; `JSObject` extension types `_PersonJs` / `_EnrichedPersonJs` in `main.dart` | `dart.enrichPerson({ name, age })` → `{ name, age, isAdult }`                                        | Zero-cost typed access to JS object fields via `dart:js_interop` extension types — no `JSON.stringify`/`parse` |
+| 4   | JS callback into Dart | `mapWithCallback<T,R>` in `example_callback.dart`                                                                          | `dart.mapWithCallback(items, fn)` — Dart invokes `fn` per element                                    | `JSFunction.callAsFunction(...)` and per-element `JSString ↔ String`                                           |
 
 Each pattern is exercised in three places: a Dart unit test (against the
 pure-Dart logic), a TypeScript example file under `typescript/examples/`,
@@ -212,7 +212,7 @@ Two layers, intentionally separate:
 
 1. **Dart tests** under `test/` validate `lib/src/example_*.dart` directly.
    No interop involved. Fast and easy to debug.
-2. **Vitest tests** under `typescript/test/` validate the *bridge*. They
+2. **Vitest tests** under `typescript/test/` validate the _bridge_. They
    run twice:
    - `project: 'node'` — `environment: 'node'`, loads `.wasm` from disk.
    - `project: 'browser'` — Vitest Browser Mode with Playwright/Chromium
@@ -229,11 +229,11 @@ Two consumers under `example/` show how a real downstream project
 integrates the bridge:
 
 - `example/browser/` — a Vite dev server. `import wasmUrl from
-  '…/bridge-wasm.wasm?url'` lets Vite copy the `.wasm` next to the
+'…/bridge-wasm.wasm?url'` lets Vite copy the `.wasm` next to the
   served JS, which is the idiomatic bundler pattern.
 - `example/node-cli/` — a plain Node script using `await` at top level.
 
-These exist *because* shipping a Dart/Wasm library and shipping a
+These exist _because_ shipping a Dart/Wasm library and shipping a
 consumable Dart/Wasm library are different things. The bundler-integration
 story is what the template is really documenting.
 
@@ -262,17 +262,17 @@ story is what the template is really documenting.
 
 A summary of the explicit calls made when designing this template:
 
-| Decision | Choice | Why |
-|---|---|---|
-| Interop style | `dart:js_interop` + `@JSExport` | Currently recommended Dart pattern; structured surface; future-proof |
-| Compile target | Both `dart compile js` *and* `dart compile wasm` | Two artifacts; runtime picks Wasm first, JS fallback |
-| Runtime | Node and browser | Both ship from the same package; `exports`-map dispatches |
-| `.d.ts` source | Generated by `tsc` from a typed `index.ts` | Avoids drift; "manual" stays true at the human authoring level |
-| Generated artifacts in git | Gitignored | Keeps diffs small; CI rebuilds |
-| Browser test runtime | Vitest Browser Mode (Playwright/Chromium) | happy-dom/jsdom cannot run Wasm-GC honestly |
-| Version source of truth | `pubspec.yaml` | Dart package metadata is authoritative; sync script writes `package.json` |
-| Publishing | Manual `pnpm publish` | CI verifies, humans release |
-| Worker / isolate example | Deliberately omitted (for now) | Not "Dart isolates"; would be Web-Worker plumbing instead — separate concern |
+| Decision                   | Choice                                           | Why                                                                          |
+| -------------------------- | ------------------------------------------------ | ---------------------------------------------------------------------------- |
+| Interop style              | `dart:js_interop` + `@JSExport`                  | Currently recommended Dart pattern; structured surface; future-proof         |
+| Compile target             | Both `dart compile js` _and_ `dart compile wasm` | Two artifacts; runtime picks Wasm first, JS fallback                         |
+| Runtime                    | Node and browser                                 | Both ship from the same package; `exports`-map dispatches                    |
+| `.d.ts` source             | Generated by `tsc` from a typed `index.ts`       | Avoids drift; "manual" stays true at the human authoring level               |
+| Generated artifacts in git | Gitignored                                       | Keeps diffs small; CI rebuilds                                               |
+| Browser test runtime       | Vitest Browser Mode (Playwright/Chromium)        | happy-dom/jsdom cannot run Wasm-GC honestly                                  |
+| Version source of truth    | `pubspec.yaml`                                   | Dart package metadata is authoritative; sync script writes `package.json`    |
+| Publishing                 | Manual `pnpm publish`                            | CI verifies, humans release                                                  |
+| Worker / isolate example   | Deliberately omitted (for now)                   | Not "Dart isolates"; would be Web-Worker plumbing instead — separate concern |
 
 ## 13. What this template is **not**
 
