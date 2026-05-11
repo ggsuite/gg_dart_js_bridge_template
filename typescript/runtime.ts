@@ -22,10 +22,14 @@ declare global {
   var dartBridge: DartBridge | undefined;
 }
 
+/* v8 ignore start — the short-circuit chain takes opposite paths in Node
+   vs. the browser runner; both runtimes are covered by the test matrix but
+   neither sees both halves of every `&&`. */
 const isNode =
   typeof process !== 'undefined' &&
   process.versions != null &&
   process.versions.node != null;
+/* v8 ignore stop */
 
 /**
  * Load and initialize the compiled Dart bridge.
@@ -52,9 +56,11 @@ export async function loadBridge(
   instance.invokeMain();
 
   const bridge = globalThis.dartBridge;
+  /* v8 ignore start — defensive: Dart's `main()` always sets this */
   if (!bridge) {
     throw new Error('Dart Wasm module did not expose globalThis.dartBridge');
   }
+  /* v8 ignore stop */
   return bridge;
 }
 
