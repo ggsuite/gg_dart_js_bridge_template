@@ -10,6 +10,7 @@
 
 /// <reference types="vitest" />
 
+import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
@@ -33,7 +34,7 @@ export default defineConfig({
           exclude: ['typescript/test/**/*.node.test.ts', 'node_modules/**'],
           browser: {
             enabled: true,
-            provider: 'playwright',
+            provider: playwright(),
             headless: true,
             instances: [{ browser: 'chromium' }],
           },
@@ -52,7 +53,6 @@ export default defineConfig({
         'typescript/generated/**',
         'typescript/examples/**',
       ],
-      all: true,
       thresholds: {
         statements: 100,
         branches: 100,

@@ -21,3 +21,4 @@ function call, class with async methods, JSON exchange, JS callback into Dart.
 - Ignore CHANGELOG.md for prettier
 - Update dart dependencies
 - Update dart and typescript dependencies
+- Update to latest dependencies

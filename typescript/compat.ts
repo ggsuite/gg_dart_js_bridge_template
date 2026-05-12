@@ -97,7 +97,6 @@ export function checkWasmGcSupport(): WasmGcSupport {
 /**
  * Like {@link checkWasmGcSupport}, but throws an `Error` with a complete,
  * user-facing message when support is missing.
- * @throws Error if Wasm-GC or JS-string builtins are unavailable.
  */
 export function assertWasmGcSupported(): void {
   const result = checkWasmGcSupport();
