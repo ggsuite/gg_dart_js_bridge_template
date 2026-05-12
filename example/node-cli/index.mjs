@@ -7,6 +7,7 @@
 // Node CLI example. Run with: `pnpm example:node`
 // Requires a prior `pnpm build:dart`.
 
+import { runBytesExample } from '../../typescript/examples/bytes.js';
 import { runCallbackExample } from '../../typescript/examples/callback.js';
 import { runClassExample } from '../../typescript/examples/class.js';
 import { runFunctionExample } from '../../typescript/examples/function.js';
@@ -23,3 +24,6 @@ console.log(await runJsonExample({ name: 'Alice', age: 30 }));
 
 console.log('\n— Example 4: JS callback into Dart —');
 console.log(await runCallbackExample());
+
+console.log('\n— Example 5: byte array exchange —');
+console.log(await runBytesExample(new Uint8Array([1, 2, 3, 4, 5])));

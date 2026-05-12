@@ -15,3 +15,4 @@ export 'src/example_function.dart';
 export 'src/example_class.dart';
 export 'src/example_json.dart';
 export 'src/example_callback.dart';
+export 'src/example_bytes.dart';

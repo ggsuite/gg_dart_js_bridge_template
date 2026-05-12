@@ -16,7 +16,9 @@ library;
 
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
+import 'dart:typed_data';
 
+import 'example_bytes.dart' as ex_bytes;
 import 'example_callback.dart' as ex_cb;
 import 'example_class.dart' as ex_class;
 import 'example_function.dart' as ex_fn;
@@ -42,6 +44,11 @@ extension type _EnrichedPersonJs._(JSObject _) implements JSObject {
     required int age,
     required bool isAdult,
   });
+}
+
+/// JS view of the byte-analysis result: `{ byteCount: number }`.
+extension type _ByteAnalysisJs._(JSObject _) implements JSObject {
+  external _ByteAnalysisJs({required int byteCount});
 }
 
 // .............................................................................
@@ -112,6 +119,19 @@ class DartBridge {
         return (ret as JSString?)?.toDart ?? '';
       });
       return result.map<JSString>((s) => s.toJS).toList().toJS;
+    });
+  }
+
+  // ----- example 5: byte array exchange -----
+
+  /// Count the bytes in a JS `Uint8Array` and return `{ byteCount }`.
+  ///
+  /// The JS `Uint8Array` arrives as a [JSUint8Array]; `.toDart` exposes it
+  /// as a [Uint8List] view over the same bytes — no copy at the boundary.
+  JSObject analyzeBytes(JSUint8Array input) {
+    return _guard(() {
+      final out = ex_bytes.analyzeBytes(input.toDart);
+      return _ByteAnalysisJs(byteCount: out.byteCount);
     });
   }
 }
