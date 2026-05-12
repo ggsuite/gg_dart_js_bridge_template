@@ -5,6 +5,7 @@ node_modules
 dist
 typescript/generated
 .gg
+CHANGELOG.md
 
 # JavaScript and TypeScript are formatted via ESLint / TS server.
 **/*.js
