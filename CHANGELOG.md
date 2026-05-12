@@ -19,3 +19,4 @@ function call, class with async methods, JSON exchange, JS callback into Dart.
 
 - Initial project
 - Ignore CHANGELOG.md for prettier
+- Update dart dependencies
