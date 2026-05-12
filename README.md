@@ -23,7 +23,8 @@ before each build.
 │       ├── example_function.dart
 │       ├── example_class.dart
 │       ├── example_json.dart
-│       └── example_callback.dart
+│       ├── example_callback.dart
+│       └── example_bytes.dart
 ├── test/                   # Dart unit tests
 ├── typescript/             # TypeScript wrapper
 │   ├── index.ts                # public typed API
@@ -72,7 +73,7 @@ pnpm run example:node      # CLI — exercises the same patterns from Node
 
 See [`example/`](example/) for the bundler integration details.
 
-## The four illustrated patterns
+## The five illustrated patterns
 
 | #   | Pattern               | Dart side                                                                           | JS side                                                                           |
 | --- | --------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
@@ -80,6 +81,7 @@ See [`example/`](example/) for the bundler integration details.
 | 2   | Class + async method  | `Counter` in `example_class.dart`                                                   | `dart.createCounter()` → handle with `incrementAsync` returning `Promise<number>` |
 | 3   | Typed object exchange | `enrichPerson` in `example_json.dart` (+ `JSObject` extension types in `main.dart`) | `dart.enrichPerson({ name, age })` — returns `{ name, age, isAdult }`             |
 | 4   | JS callback into Dart | `mapWithCallback` in `example_callback.dart`                                        | `dart.mapWithCallback(items, fn)` — Dart invokes `fn` per element                 |
+| 5   | Byte array exchange   | `analyzeBytes` in `example_bytes.dart` (`Uint8List` from a JS `Uint8Array`)         | `dart.analyzeBytes(new Uint8Array([…]))` — returns `{ byteCount }`                |
 
 Each pattern has a Dart unit test, a TypeScript example file, and a Vitest
 spec that runs in both Node and a real Chromium browser.

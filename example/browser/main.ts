@@ -4,12 +4,14 @@
 // Use of this source code is governed by terms that can be
 // found in the LICENSE file in the root of this package.
 
+import { runBytesExample } from '../../typescript/examples/bytes.js';
 import { runCallbackExample } from '../../typescript/examples/callback.js';
 import { runClassExample } from '../../typescript/examples/class.js';
 import { runFunctionExample } from '../../typescript/examples/function.js';
 import { runJsonExample } from '../../typescript/examples/json.js';
 import wasmUrl from '../../typescript/generated/bridge-wasm.wasm?url';
 import { checkWasmGcSupport, init } from '../../typescript/index.js';
+
 
 async function main(): Promise<void> {
   // Surface a clear message when the browser is missing Wasm-GC support
@@ -30,6 +32,14 @@ async function main(): Promise<void> {
     JSON.stringify(await runJsonExample({ name: 'Alice', age: 30 }), null, 2),
   );
   setText('out-callback', (await runCallbackExample()).join(', '));
+  setText(
+    'out-bytes',
+    JSON.stringify(
+      await runBytesExample(new Uint8Array([1, 2, 3, 4, 5])),
+      null,
+      2,
+    ),
+  );
 }
 
 function setText(id: string, text: string): void {

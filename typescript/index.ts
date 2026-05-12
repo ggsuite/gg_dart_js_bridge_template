@@ -39,6 +39,11 @@ export interface EnrichedPerson extends Person {
   isAdult: boolean;
 }
 
+/** Output shape returned by `analyzeBytes`. */
+export interface ByteAnalysis {
+  byteCount: number;
+}
+
 /** The bridge surface exposed to JS/TS callers. */
 export interface DartBridge {
   /** Add two integers. */
@@ -51,6 +56,8 @@ export interface DartBridge {
   enrichPerson(input: Person): EnrichedPerson;
   /** Apply a JS callback to every entry of `items`. */
   mapWithCallback(items: string[], callback: (item: string) => string): string[];
+  /** Count the bytes of a `Uint8Array` and return `{ byteCount }`. */
+  analyzeBytes(input: Uint8Array): ByteAnalysis;
 }
 
 /** Options for `init()`. */

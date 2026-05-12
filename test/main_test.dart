@@ -21,6 +21,7 @@ library;
 
 import 'dart:js_interop';
 import 'dart:js_interop_unsafe';
+import 'dart:typed_data';
 
 import 'package:gg_dart_js_bridge_template/src/main.dart';
 import 'package:test/test.dart';
@@ -106,6 +107,19 @@ void main() {
         'BAR',
         'BAZ',
       ]);
+    });
+  });
+
+  group('example 5 — byte array exchange', () {
+    test('returns the byte count for a populated buffer', () {
+      final bytes = Uint8List.fromList(<int>[1, 2, 3, 4, 5]).toJS;
+      final out = bridge.analyzeBytes(bytes);
+      expect((out.getProperty('byteCount'.toJS) as JSNumber).toDartInt, 5);
+    });
+
+    test('returns 0 for an empty buffer', () {
+      final out = bridge.analyzeBytes(Uint8List(0).toJS);
+      expect((out.getProperty('byteCount'.toJS) as JSNumber).toDartInt, 0);
     });
   });
 }
